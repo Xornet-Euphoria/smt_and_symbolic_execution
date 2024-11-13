@@ -13,8 +13,10 @@ s = proj.factory.entry_state(
     }
 )
 
+avoids = [8393592, 8393781, 8393809, 8393939, 8395051, 8395079, 8395107, 8395294, 8395322, 8395579, 8396272, 8396300, 8396328, 8396468, 8396664, 8396793, 8396821, 8396849, 8398109, 8398137, 8398165, 8398193, 8398221, 8398419, 8398532]
+
 simgr = proj.factory.simulation_manager(s)
-simgr.explore(find=0x402539)
+simgr.explore(find=0x402539, avoid=avoids)
 
 print(simgr.run())
 
