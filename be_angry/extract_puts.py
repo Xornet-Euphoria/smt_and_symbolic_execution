@@ -52,6 +52,8 @@ puts_addr = 0x401070
 
 
 avoids = []
+incorrect_s =  0x403004
+correct_s = 0x403010
 base_addr = 0x400000
 for op in md.disasm(text, base_addr + 0x10a0):
     mnemonic = op.mnemonic
@@ -63,7 +65,7 @@ for op in md.disasm(text, base_addr + 0x10a0):
 
         if called_addr == puts_addr:
             print(f"[+] found: `puts(0x{tracked_rdi:x})`")
-            if tracked_rdi == 0x403004:
+            if tracked_rdi == incorrect_s:
                 avoids.append(op.address + base_addr)
 
 f.close()
