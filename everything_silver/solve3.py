@@ -34,7 +34,7 @@ with open("./ops.pkl", "rb") as f:
 
 for addr, b in ops:
     op = next(md.disasm(b, addr))
-    # print(f"0x{op.address:x}: {op.mnemonic} {op.op_str}")
+    print(f"0x{op.address:x}: {op.mnemonic} {op.op_str}")
 
     if op.address == 0x7fc52560a11d:
         break

@@ -49,7 +49,7 @@ for x in xs:
     eax_mul += 0xc0ffee
 
     # add new operation
-    # mov dword ptr [rdi], rax
+    # mov dword ptr [rdi], eax
     shellcode += b"\x89\x07"
 
     # add    rdi, 0x4

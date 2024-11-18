@@ -11,11 +11,11 @@ def set_str_to_rdi(st, addr):
     return regs.rdi.cv == addr
 
 
-proj = angr.Project("./chall")
+proj = angr.Project("./chall", auto_load_libs=False)
 inp = claripy.BVS("inp", 8 * 0x19)
 
 s = proj.factory.entry_state(
-    args=[proj.filename],
+    # args=[proj.filename],
     stdin=inp,
     add_options={
         "ZERO_FILL_UNCONSTRAINED_MEMORY",
@@ -41,8 +41,6 @@ avoid_f = lambda st: set_str_to_rdi(st, incorrect_s)
 
 # correct_addr = 0x402539
 simgr.explore(find=find_f, avoid=avoid_f)
-
-print(simgr.run())
 
 if simgr.found:
     found_s = simgr.found[0]
