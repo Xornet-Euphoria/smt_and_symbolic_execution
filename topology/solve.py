@@ -42,6 +42,7 @@ import angr, claripy
 
 
 # not working FXXK
+# info: https://github.com/usc-isi-bass/hashdos_vulnerability_detection/blob/e3edf476951ba3d428bad3ee93ff12e5a44d0d4b/hash_patcher/hash_patcher.py#L355
 def ret_br(st):
     print("test")
     # st.solver.add(st.regs.rax == 0)
@@ -52,7 +53,6 @@ def ret_br(st):
     # st.globals["halt_exploration"] = True
 
 
-rounds = 10
 candidates = [defaultdict(int) for i in range(rounds)]
 
 proj = angr.Project("./topology", auto_load_libs=False)
