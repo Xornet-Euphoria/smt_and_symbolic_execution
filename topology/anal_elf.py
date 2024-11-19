@@ -31,4 +31,5 @@ for symname, addr in symbols.items():
 
 assert cnt == 99 and _cnt == 99
 
+# todo: get all `ret` in functions with capstone
 # print(symbol_and_jmp_idx)
