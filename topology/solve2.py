@@ -24,7 +24,7 @@ import sys
 
 # execution forced even if candidates are cached
 FORCE = "-f" in sys.argv
-pkl_filename = "candidates.pkls"
+pkl_filename = "candidates.pkl"
 
 if not FORCE and os.path.exists(pkl_filename):
     print("[+] using cache")
