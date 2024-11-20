@@ -20,9 +20,13 @@ def recover_flag(result: list[defaultdict]):
 
 import pickle
 import os
+import sys
+
+# execution forced even if candidates are cached
+FORCE = "-f" in sys.argv
 pkl_filename = "candidates.pkl"
 
-if os.path.exists(pkl_filename):
+if not FORCE and os.path.exists(pkl_filename):
     print("[+] using cache")
     with open(pkl_filename, "rb") as f:
         candidates = pickle.load(f)
@@ -57,7 +61,7 @@ candidates = [defaultdict(int) for i in range(rounds)]
 
 proj = angr.Project("./topology", auto_load_libs=False)
 
-for symname, (addr, jmp_idx_addr) in tqdm(symbol_and_jmp_idx.items()):
+for symname, (addr, jmp_idx_addr, _) in tqdm(symbol_and_jmp_idx.items()):
     for jmp_idx in range(rounds):
         state = proj.factory.blank_state(
             addr=addr,

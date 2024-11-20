@@ -20,9 +20,13 @@ def recover_flag(result: list[defaultdict]):
 
 import pickle
 import os
+import sys
+
+# execution forced even if candidates are cached
+FORCE = "-f" in sys.argv
 pkl_filename = "candidates.pkls"
 
-if os.path.exists(pkl_filename):
+if not FORCE and os.path.exists(pkl_filename):
     print("[+] using cache")
     with open(pkl_filename, "rb") as f:
         candidates = pickle.load(f)
@@ -42,7 +46,6 @@ import angr, claripy
 
 candidates = [defaultdict(int) for i in range(rounds)]
 
-# not working FXXK
 def ret_br(st):
     addr = st.solver.eval(st.inspect.instruction)
     instruction = st.memory.load(addr, 1).concrete_value
@@ -62,7 +65,7 @@ globals_for_hook = {
     "jmp_idx": 0
 }
 
-for symname, (addr, jmp_idx_addr) in tqdm(symbol_and_jmp_idx.items()):
+for symname, (addr, jmp_idx_addr, _) in tqdm(symbol_and_jmp_idx.items()):
     for jmp_idx in range(rounds):
         globals_for_hook["jmp_idx"] = jmp_idx
         state = proj.factory.blank_state(
@@ -78,25 +81,10 @@ for symname, (addr, jmp_idx_addr) in tqdm(symbol_and_jmp_idx.items()):
         state.regs.rdi = buf_addr
         state.memory.store(jmp_idx_addr, jmp_idx.to_bytes(4, "little"))
 
-        # why not working ???
         state.inspect.b("instruction", when=angr.BP_BEFORE, action=ret_br)
 
         simgr = proj.factory.simulation_manager(state)
         simgr.run()
-        # res = None
-
-        # while sts := simgr.active:
-        #     st = sts[0]
-        #     if st.solver.eval(st.addr) == 0:
-        #         regs = st.regs
-        #         st.solver.add(st.regs.rax == 0)
-        #         res = st.solver.eval(bv, cast_to=bytes).decode(errors="ignore")
-        #         break
-
-        #     simgr.step()
-
-        # # print(f"[{addr:x}-{jmp_idx:x}] {res}")
-        # candidates[jmp_idx][res] += 1
 
 # save
 with open(pkl_filename, "wb") as f:
