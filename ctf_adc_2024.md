@@ -25,4 +25,4 @@ angrのCFGはデコンパイラに使える他にかなり強力な解析機能�
 
 ## 終わりに
 
-明日もrand0mさんがなにか書いてくれるそうです (todo: 掲載されたらリンクを生やす)。Revの話題が多い方なので楽しみです。
+明日もrand0mさんがなにか書いてくれるそうです (-> 書いてくれました: [Visualizing Code Property Graphs for Binary Analysis in Jupyter/Google Colab](https://rndt.pages.dev/private/graphs-in-notebook-t8Jauv15o8hLq9DIGCp3VixFXPrIsbH0ZinnSEfsXSKj/))。Revの話題が多い方なので楽しみです。
