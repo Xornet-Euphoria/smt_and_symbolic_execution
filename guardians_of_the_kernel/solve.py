@@ -1,7 +1,7 @@
 import angr, claripy
 from Crypto.Util.number import long_to_bytes
 
-module_path = "./fs/flag_checker.ko"
+module_path = "./flag_checker.ko"
 proj = angr.Project(module_path, auto_load_libs=False)
 
 # 方針
@@ -58,7 +58,6 @@ for code, ctx in code_ctx.items():
     # init: set hooks, layers (var), code
     state.regs.esi = code
     ubuf = claripy.BVS(f"inp-{code:x}", kbuf_size)
-    print(ubuf)
     state.memory.store(kbuf, ubuf)
     # layers (var)
     state.memory.store(layers, b"\xff" * 12)
