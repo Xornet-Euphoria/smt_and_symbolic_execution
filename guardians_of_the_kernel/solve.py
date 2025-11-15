@@ -34,9 +34,9 @@ class copy_from_user_hook(angr.SimProcedure):
         return 0
 
         size = size.concrete_value
-        bv = claripy.BVS("ubuf", size)
+        bv = claripy.BVS("ubuf", size * 8)
         print("2")
-        # why it isnt execute?
+        # not executed????????????????????
         self.state.memory.store(kbuf.concrete_value, bv)
 
 proj.hook_symbol("printk", printk_hook())
@@ -57,7 +57,7 @@ for code, ctx in code_ctx.items():
     target_addr = ctx[0]
     # init: set hooks, layers (var), code
     state.regs.esi = code
-    ubuf = claripy.BVS(f"inp-{code:x}", kbuf_size)
+    ubuf = claripy.BVS(f"inp-{code:x}", kbuf_size*8)
     state.memory.store(kbuf, ubuf)
     # layers (var)
     state.memory.store(layers, b"\xff" * 12)
