@@ -1,4 +1,4 @@
-import angr, claripy
+import angr
 import sys
 
 
@@ -16,9 +16,7 @@ if __name__ == "__main__":
             print("[+] LET'S GOOOOOO")
     target = "./target" if USE_VERI else "./target_no_veri"
     proj = angr.Project(target, auto_load_libs=False)
-    inp = claripy.BVS("inp", 8 * 0x20)
     s = proj.factory.entry_state(
-        stdin=inp,
         add_options={
             "ZERO_FILL_UNCONSTRAINED_MEMORY",
             "ZERO_FILL_UNCONSTRAINED_REGISTERS"
@@ -27,6 +25,7 @@ if __name__ == "__main__":
 
     simgr = proj.factory.simulation_manager(s, veritesting=USE_VERI)
 
+    # using step-and-loop for checking active states
     while simgr.active and simgr.active[0].regs.rip.concrete_value != 0:
         print(simgr.active)
         if len(simgr.active) > 16:
@@ -36,6 +35,6 @@ if __name__ == "__main__":
         for st in simgr.active:
             if b"OK" in st.posix.dumps(1):
                 print("[+] Found!")
-                print(st.solver.eval(inp, cast_to=bytes))
+                print(st.posix.dumps(0))
                 exit()
         simgr.step()
